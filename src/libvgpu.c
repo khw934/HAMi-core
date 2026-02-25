@@ -872,16 +872,21 @@ void preInit(){
 void postInit(){
     allocator_init();
     map_cuda_visible_devices();
-    try_lock_unified_lock();
-    nvmlReturn_t res = set_task_pid();
-    try_unlock_unified_lock();
-    LOG_MSG("Initialized");
-    if (res!=NVML_SUCCESS){
-        LOG_WARN("SET_TASK_PID FAILED.");
+    int lock_ret = try_lock_unified_lock();
+    if (lock_ret != 0) {
+        LOG_WARN("try_lock_unified_lock failed, skipping set_task_pid");
         pidfound=0;
-    }else{
-        pidfound=1;
+    } else {
+        nvmlReturn_t res = set_task_pid();
+        try_unlock_unified_lock();
+        if (res != NVML_SUCCESS) {
+            LOG_WARN("SET_TASK_PID FAILED.");
+            pidfound = 0;
+        } else {
+            pidfound = 1;
+        }
     }
+    LOG_MSG("Initialized");
 
     //add_gpu_device_memory_usage(getpid(),0,context_size,0);
     env_utilization_switch = set_env_utilization_switch();
