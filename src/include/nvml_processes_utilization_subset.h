@@ -6,13 +6,15 @@
 #ifndef SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_
 #define SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_
 
+#include <stdint.h>
+
 #ifndef nvmlProcessesUtilizationInfo_v1
 
 /**
  * Structure to store utilization value and process Id -- version 1
  */
 typedef struct nvmlProcessUtilizationInfo_v1_st {
-  unsigned long long timeStamp;  //!< CPU Timestamp in microseconds
+  uint64_t timeStamp;  //!< CPU Timestamp in microseconds
   unsigned int pid;              //!< PID of process
   unsigned int smUtil;           //!< SM (3D/Compute) Util Value
   unsigned int memUtil;          //!< Frame Buffer Memory Util Value
@@ -28,7 +30,7 @@ typedef struct nvmlProcessUtilizationInfo_v1_st {
 typedef struct nvmlProcessesUtilizationInfo_v1_st {
   unsigned int version;            //!< The version number of this struct
   unsigned int processSamplesCount;  //!< Caller array size / returned count
-  unsigned long long lastSeenTimeStamp;  //!< Min timestamp for returned samples
+  uint64_t lastSeenTimeStamp;  //!< Min timestamp for returned samples
   nvmlProcessUtilizationInfo_v1_t *procUtilArray;  //!< Caller-allocated samples
 } nvmlProcessesUtilizationInfo_v1_t;
 
@@ -42,4 +44,4 @@ nvmlReturn_t nvmlDeviceGetProcessesUtilizationInfo(
 
 #endif /* nvmlProcessesUtilizationInfo_v1 */
 
-#endif /* SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_ */
+#endif  // SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_
