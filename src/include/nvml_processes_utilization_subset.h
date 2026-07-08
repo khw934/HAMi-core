@@ -3,8 +3,8 @@
  * (driver 580+). Omitted from older CUDA nvml.h headers shipped with the
  * project build; skipped when a newer nvml.h already defines them.
  */
-#ifndef HIJACK_NVML_PROCESSES_UTILIZATION_SUBSET_H
-#define HIJACK_NVML_PROCESSES_UTILIZATION_SUBSET_H
+#ifndef SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_
+#define SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_
 
 #ifndef nvmlProcessesUtilizationInfo_v1
 
@@ -42,4 +42,4 @@ nvmlReturn_t nvmlDeviceGetProcessesUtilizationInfo(
 
 #endif /* nvmlProcessesUtilizationInfo_v1 */
 
-#endif /* HIJACK_NVML_PROCESSES_UTILIZATION_SUBSET_H */
+#endif /* SRC_INCLUDE_NVML_PROCESSES_UTILIZATION_SUBSET_H_ */

@@ -123,7 +123,7 @@ unsigned int cuda_to_nvml_map(unsigned int cudadev){
 
 static nvmlReturn_t get_process_utilization_samples(
     nvmlDevice_t device,
-    unsigned long long last_seen,
+    uint64_t last_seen,
     nvmlProcessUtilizationSample_t *out,
     unsigned int *out_count) {
   unsigned int processes_num = *out_count;
