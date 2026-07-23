@@ -1,12 +1,13 @@
-# HAMi-core —— CUDA 环境的 Hook 库
+# HAMi-core: CUDA 环境的 Hook 库
+
+[![build-src](https://github.com/Project-HAMi/HAMi-core/actions/workflows/build-src.yml/badge.svg)](https://github.com/Project-HAMi/HAMi-core/actions/workflows/build-src.yml)
+[![style](https://github.com/Project-HAMi/HAMi-core/actions/workflows/style.yaml/badge.svg)](https://github.com/Project-HAMi/HAMi-core/actions/workflows/style.yaml)
 
 [English](README.md) | 中文 | [日本語](README_JA.md)
 
 ## 介绍
 
-HAMi-core 是一个容器内的 GPU 资源控制器，已被 [HAMi](https://github.com/Project-HAMi/HAMi) 和 [volcano](https://github.com/volcano-sh/devices) 等项目采用。
-
-<img src="./docs/images/hami-arch.png" width = "600" /> 
+HAMi-core 是一个容器内的 GPU 资源控制器，在不修改应用或驱动的前提下，通过拦截 CUDA 调用来实现按容器的设备显存限制和算力限制。已被 [HAMi](https://github.com/Project-HAMi/HAMi) 和 [volcano](https://github.com/volcano-sh/devices) 等项目采用。关于 HAMi 整体架构以及 HAMi-core 在其中的位置，请参阅 [HAMi 项目](https://github.com/Project-HAMi/HAMi)。
 
 ## 特性
 
@@ -21,13 +22,38 @@ HAMi-core 具有以下特性：
 
 HAMi-core 通过劫持 CUDA-Runtime(libcudart.so) 和 CUDA-Driver(libcuda.so) 之间的 API 调用来实现功能，如下图所示：
 
-<img src="./docs/images/hami-core-position.png" width = "400" />
+```mermaid
+flowchart TD
+    A[CUDA Application] --> B[CUDA Library]
+    B --> C["CUDA Runtime<br>(libcudart.so)"]
+    C --> H[HAMi-core]
+    H --> D["CUDA Driver<br>(libcuda.so)"]
+    D --> E[NVIDIA Driver]
+    E --> F[NVIDIA GPU]
+    style H fill:#eeeeee,stroke:#333333
+```
 
-## 在Docker中编译
+## 快速开始
+
+### 环境依赖
+
+- CMake >= 2.8.12
+- 可用的 CUDA 工具链（`CUDA_HOME`，默认 `/usr/local/cuda`）
+- 如需容器化编译，还需要 Docker
+
+### 在Docker中编译
 
 ```bash
 make build-in-docker
 ```
+
+### 本地编译
+
+```bash
+./build.sh
+```
+
+编译产物 `libvgpu.so` 会写入 `build/` 目录。
 
 ## 使用方法
 
@@ -102,3 +128,8 @@ Mon Dec  2 04:38:12 2024
 
 ```bash
 ./test/test_alloc
+```
+
+## 参与贡献
+
+欢迎参与贡献。提交 Pull Request 前，请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)（英文）了解贡献流程、行为准则和代码审查要求。
